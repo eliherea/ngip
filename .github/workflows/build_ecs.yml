@@ -5,7 +5,7 @@ on:
     branches:
       - "main"
     paths:
-      - .github/workflows/example_deploy_ecs.yaml
+      - .github/workflows/build_ecs.yaml
       - "worker/**"
 
 env:
