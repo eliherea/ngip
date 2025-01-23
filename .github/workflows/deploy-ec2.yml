@@ -25,7 +25,7 @@ jobs:
         id: ec2_create
         run: |
           # Membuat instance EC2 menggunakan AWS CLI
-          INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0df8c184d5f6ae949 --count 1 --instance-type t2.micro --key-name vockey --security-group-ids sg-0c6a6f87a7620e211 --subnet-id subnet-0a367105a13b51288 --user-data file://.github/workflows/bashscript.sh --query "Instances[0].InstanceId" --output text)
+          INSTANCE_ID=$(aws ec2 run-instances --image-id ami-0df8c184d5f6ae949 --count 1 --instance-type t2.micro --key-name vockey --security-group-ids sg-0c6a6f87a7620e211 --subnet-id subnet-0a367105a13b51288 --user-data file://.github/workflows/bashcript.sh --query "Instances[0].InstanceId" --output text)
           echo "INSTANCE_ID=$INSTANCE_ID" >> $GITHUB_ENV
         
       - name: Wait for EC2 Instance to be Running
