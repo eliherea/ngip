@@ -1,12 +1,23 @@
-#!/bin/bash -xe 
+#!/bin/bash -xe
+cd /home/ec2-user
+cat <<EOF > configure-runner.sh
+#!/bin/bash -xe
+cd /home/ec2-user
 sudo yum update -y
-sudo yum install cloud-init -y
-sudo systemctl enable cloud-init
-sudo systemctl start cloud-init
-curl -sL https://rpm.nodesource.com/setup_16.x | sudo -E bash -
-sudo yum install nodejs git -y
-sudo git clone https://github.com/eliherea/ngip.git
-cd ngip
-sudo npm install
-sudo npm install -g pm2
-sudo pm2 start index.js
+sudo yum install dotnet-sdk-6.0 -y
+sudo yum install -y curl --allowerasing
+sudo yum install -y curl --skip-broken
+sudo yum install -y curl
+sudo mkdir -p actions-runner
+sudo chmod -R 777 actions-runner
+cd actions-runner
+sudo curl -o actions-runner-linux-x64-2.321.0.tar.gz -L https://github.com/actions/runner/releases/download/v2.321.0/actions-runner-linux-x64-2.321.0.tar.gz
+sudo tar xzf ./actions-runner-linux-x64-2.321.0.tar.gz || { echo "Extraction failed"; exit 1; }
+sudo chmod -R 777 /home/ec2-user/actions-runner
+sudo -u ec2-user ./config.sh --url https://github.com/eliherea/ngip --token BANSPDMAZRKUFAFEIW4QLULHSHISO --name Node1 --unattended
+sudo ./svc.sh install
+sudo ./svc.sh start
+EOF
+
+sudo chmod -R 777 configure-runner.sh
+sudo -u ec2-user ./configure-runner.sh
